@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/blog_details_controller.dart';
+import '../../services/sharedpreferences_service.dart';
 
 class BlogDetailsScreen extends StatelessWidget {
-  const BlogDetailsScreen({super.key});
+  BlogDetailsScreen({super.key});
+  final BlogDetailsController controller = Get.find<BlogDetailsController>();
 
   @override
   Widget build(BuildContext context) {
-    final BlogDetailsController controller = Get.find<BlogDetailsController>();
     final blog = controller.blog;
     return Scaffold(
       appBar: AppBar(),
@@ -32,9 +33,11 @@ class BlogDetailsScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 24),
-            Text(
-              "Comments (${controller.comments.length})",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            Obx(
+              () => Text(
+                "Comments (${controller.comments.length})",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
             const SizedBox(height: 16),
             Obx(() {
@@ -45,16 +48,42 @@ class BlogDetailsScreen extends StatelessWidget {
               if (controller.comments.isEmpty) {
                 return const Text("No comments yet.");
               }
-
               return Column(
                 children: controller.comments.map((comment) {
                   return ListTile(
-                    title: Text(comment.comment),
-                    subtitle: Text("By: ${comment.user.name}"),
+                    title: Text(
+                      comment.comment,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "By: ${comment.user.name}",
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   );
                 }).toList(),
               );
             }),
+
+            SizedBox(height: 16),
+
+            //comment section
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: InputDecoration(hintText: "Add a comment"),
+                  ),
+                ),
+                SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(Icons.send, size: 32),
+                ),
+              ],
+            ),
           ],
         ),
       ),
