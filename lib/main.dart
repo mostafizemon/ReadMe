@@ -1,10 +1,13 @@
 import 'package:blog/routes/app_pages.dart';
 import 'package:blog/routes/app_routes.dart';
+import 'package:blog/services/sharedpreferences_service.dart';
 import 'package:blog/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesService.init();
   runApp(const MyApp());
 }
 

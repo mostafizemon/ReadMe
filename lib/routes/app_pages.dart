@@ -1,3 +1,4 @@
+import 'package:blog/binding/blog_details_binding.dart';
 import 'package:blog/binding/home_binding.dart';
 import 'package:blog/binding/splash_binding.dart';
 import 'package:blog/routes/app_routes.dart';
@@ -20,7 +21,11 @@ class AppPages {
       page: () => SplashScreen(),
       binding: SplashBinding(),
     ),
-    GetPage(name: AppRoutes.blogDetailsScreen, page: () => BlogDetailsScreen()),
+    GetPage(
+      name: AppRoutes.blogDetailsScreen,
+      page: () => BlogDetailsScreen(),
+      binding: BlogDetailsBinding(),
+    ),
     GetPage(name: AppRoutes.addNewBlogScreen, page: () => AddNewBlogScreen()),
   ];
 }
