@@ -2,88 +2,116 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/blog_details_controller.dart';
+import '../../services/sharedpreferences_service.dart';
+import '../../widgets/custom_alert_dialog.dart';
 
 class BlogDetailsScreen extends StatelessWidget {
   BlogDetailsScreen({super.key});
   final BlogDetailsController controller = Get.find<BlogDetailsController>();
+  final formKey = GlobalKey<FormState>();
+  final commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final blog = controller.blog;
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            Text(
-              blog.title,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Created By: ${blog.user.name}",
-              style: TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              blog.description,
-              style: TextStyle(color: Colors.black, fontSize: 16),
-            ),
-
-            const SizedBox(height: 24),
-            Obx(
-              () => Text(
-                "Comments (${controller.comments.length})",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              Text(
+                blog.title,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 16),
-            Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
+              const SizedBox(height: 8),
+              Text(
+                "Created By: ${blog.user.name}",
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                blog.description,
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
 
-              if (controller.comments.isEmpty) {
-                return const Text("No comments yet.");
-              }
-              return Column(
-                children: controller.comments.map((comment) {
-                  return ListTile(
-                    title: Text(
-                      comment.comment,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+              const SizedBox(height: 24),
+              Obx(
+                () => Text(
+                  "Comments (${controller.comments.length})",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (controller.comments.isEmpty) {
+                  return const Text("No comments yet.");
+                }
+                return Column(
+                  children: controller.comments.map((comment) {
+                    return ListTile(
+                      title: Text(
+                        comment.comment,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      "By: ${comment.user.name}",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  );
-                }).toList(),
-              );
-            }),
+                      subtitle: Text(
+                        "By: ${comment.user.name}",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    );
+                  }).toList(),
+                );
+              }),
 
-            SizedBox(height: 16),
+              SizedBox(height: 16),
 
-            //comment section
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(hintText: "Add a comment"),
+              //comment section
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: commentController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a comment";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(hintText: "Add a comment"),
+                    ),
                   ),
-                ),
-                SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () {},
-                  child: Icon(Icons.send, size: 32),
-                ),
-              ],
-            ),
-          ],
+                  SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      if (SharedPreferencesService().isLoggedIn()) {
+                        if (formKey.currentState!.validate()) {
+                          controller.addComment(commentController.text.trim());
+                          commentController.clear();
+                        }
+                      } else {
+                        Get.dialog(
+                          CustomAlertDialog(
+                            content: "You must be logged in to post a comment.",
+                          ),
+                          barrierDismissible: false,
+                        );
+                      }
+                    },
+                    child: Icon(Icons.send, size: 32),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:blog/binding/add_new_blog_binding.dart';
 import 'package:blog/binding/blog_details_binding.dart';
 import 'package:blog/binding/home_binding.dart';
 import 'package:blog/binding/login_binding.dart';
@@ -29,7 +30,11 @@ class AppPages {
       page: () => BlogDetailsScreen(),
       binding: BlogDetailsBinding(),
     ),
-    GetPage(name: AppRoutes.addNewBlogScreen, page: () => AddNewBlogScreen()),
+    GetPage(
+      name: AppRoutes.addNewBlogScreen,
+      page: () => AddNewBlogScreen(),
+      binding: AddNewBlogBinding(),
+    ),
     GetPage(
       name: AppRoutes.loginScreen,
       page: () => LoginScreen(),

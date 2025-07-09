@@ -5,17 +5,22 @@ import 'package:get/get.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/login_signup_optional_text.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<SignupController>();
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+  State<SignupScreen> createState() => _SignupScreenState();
+}
 
+final controller = Get.find<SignupController>();
+final TextEditingController nameController = TextEditingController();
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final formKey = GlobalKey<FormState>();
+
+class _SignupScreenState extends State<SignupScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -136,5 +141,13 @@ class SignupScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

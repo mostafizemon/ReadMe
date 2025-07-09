@@ -1,7 +1,9 @@
 import 'package:blog/controllers/home_controller.dart';
 import 'package:blog/routes/app_routes.dart';
 import 'package:blog/screens/home_screen/widgets/blogs_listview.dart';
+import 'package:blog/services/sharedpreferences_service.dart';
 import 'package:blog/widgets/app_name_custom_textstyle.dart';
+import 'package:blog/widgets/custom_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
+    final searchController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,10 +36,15 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
+              controller: searchController,
               decoration: const InputDecoration(
                 hintText: 'Search',
                 prefixIcon: Icon(Icons.search),
               ),
+              onChanged: (value) {
+                controller.searchBlogs(value);
+                controller.selectedFilter.value = "All";
+              },
             ),
             const SizedBox(height: 16),
             Obx(() {
@@ -65,7 +73,16 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(AppRoutes.addNewBlogScreen);
+          if (SharedPreferencesService().isLoggedIn()) {
+            Get.toNamed(AppRoutes.addNewBlogScreen);
+          } else {
+            Get.dialog(
+              CustomAlertDialog(
+                content: "You must be logged in to create a new blog.",
+              ),
+              barrierDismissible: false,
+            );
+          }
         },
         child: const Icon(Icons.add),
       ),

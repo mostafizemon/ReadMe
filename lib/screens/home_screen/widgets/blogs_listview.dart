@@ -20,23 +20,16 @@ class BlogsListview extends StatelessWidget {
         }
         return ListView.separated(
           itemCount: controller.blogs.length,
-          separatorBuilder: (context, index) =>
-          const SizedBox(height: 12),
+          separatorBuilder: (context, index) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             final blog = controller.blogs[index];
             return ListTile(
               onTap: () {
-                Get.toNamed(
-                  AppRoutes.blogDetailsScreen,
-                  arguments: blog,
-                );
+                Get.toNamed(AppRoutes.blogDetailsScreen, arguments: blog);
               },
               title: Text(
                 blog.title,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +44,7 @@ class BlogsListview extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "Reading Time: ${blog.totalReadTime / 60} Minutes",
+                    "Reading Time: ${(blog.totalReadTime / 60).toStringAsFixed(2)} Minutes",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],

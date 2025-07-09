@@ -44,4 +44,17 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> searchBlogs(String query) async {
+    String url = "$baseUrl/api/blogs/search?query=$query";
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        blogs.value = List<BlogModel>.from(
+          data['data'].map((item) => BlogModel.fromJson(item)),
+        );
+      }
+    } catch (e) {}
+  }
 }
