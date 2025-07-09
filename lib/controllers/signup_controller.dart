@@ -30,11 +30,16 @@ class SignupController extends GetxController {
         final data = json.decode(response.body);
         final token = data['access_token'];
         final type = data['token_type'];
+        final user = data['user'];
+        final name = user['name'];
+        final email = user['email'];
 
         if (token != null && type != null) {
           await SharedPreferencesService().saveAuthToken(
             accessToken: token,
             tokenType: type,
+            userName: name,
+            userEmail: email,
           );
 
           CustomSnakbar.show(

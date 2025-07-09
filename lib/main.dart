@@ -20,8 +20,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ReadMe',
       theme: AppTheme.lightThemeData,
-      darkTheme: AppTheme.darkThemeData,
-      themeMode: ThemeMode.system,
       initialRoute: AppRoutes.splashScreen,
       getPages: AppPages.pages,
     );

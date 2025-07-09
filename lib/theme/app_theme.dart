@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static ThemeData get lightThemeData {
     return ThemeData(
+      colorSchemeSeed: Colors.deepOrange,
       textTheme: GoogleFonts.loraTextTheme(),
       scaffoldBackgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
@@ -39,6 +40,16 @@ class AppTheme {
           padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 12)),
         ),
       ),
+      drawerTheme: DrawerThemeData(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+        ),
+      )
     );
   }
 

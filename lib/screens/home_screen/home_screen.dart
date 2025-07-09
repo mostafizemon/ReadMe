@@ -1,6 +1,7 @@
 import 'package:blog/controllers/home_controller.dart';
 import 'package:blog/routes/app_routes.dart';
 import 'package:blog/screens/home_screen/widgets/blogs_listview.dart';
+import 'package:blog/screens/home_screen/widgets/drawer_listview.dart';
 import 'package:blog/services/sharedpreferences_service.dart';
 import 'package:blog/widgets/app_name_custom_textstyle.dart';
 import 'package:blog/widgets/custom_alert_dialog.dart';
@@ -19,18 +20,31 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: AppNameCustomTextstyle(),
         centerTitle: true,
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              icon: const Icon(Icons.line_weight_rounded, size: 32),
-            );
-          },
-        ),
+        actions: [
+          SharedPreferencesService().isLoggedIn()
+              ? IconButton(
+                  onPressed: () async {
+                    SharedPreferencesService().clearAuthToken();
+                    Get.offAllNamed(AppRoutes.homeScreen);
+                  },
+                  icon: Icon(Icons.logout),
+                )
+              : TextButton(
+                  onPressed: () => Get.toNamed(AppRoutes.loginScreen),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+        ],
       ),
-      drawer: const Drawer(),
+      drawer: SharedPreferencesService().isLoggedIn()
+          ? Drawer(child: DrawerListview())
+          : null,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -16,18 +16,28 @@ class SharedPreferencesService {
 
   static const String _accessTokenKey = "access_token";
   static const String _tokenTypeKey = "token_type";
+  static const String _userNamerKey = "user_name";
+  static const String _userEmailKey = "user_email";
 
   Future<void> saveAuthToken({
     required String accessToken,
     required String tokenType,
+    String? userName,
+    String? userEmail,
   }) async {
     await _prefs?.setString(_accessTokenKey, accessToken);
     await _prefs?.setString(_tokenTypeKey, tokenType);
+    await _prefs?.setString(_userNamerKey, userName ?? "");
+    await _prefs?.setString(_userEmailKey, userEmail ?? "");
   }
 
   String? getAccessToken() => _prefs?.getString(_accessTokenKey);
 
   String? getTokenType() => _prefs?.getString(_tokenTypeKey);
+
+  String? getUserName() => _prefs?.getString(_userNamerKey);
+
+  String? getUserEmail() => _prefs?.getString(_userEmailKey);
 
   String? getAuthHeader() {
     final token = getAccessToken();
@@ -41,6 +51,8 @@ class SharedPreferencesService {
   Future<void> clearAuthToken() async {
     await _prefs?.remove(_accessTokenKey);
     await _prefs?.remove(_tokenTypeKey);
+    await _prefs?.remove(_userNamerKey);
+    await _prefs?.remove(_userEmailKey);
   }
 
   bool isLoggedIn() {
