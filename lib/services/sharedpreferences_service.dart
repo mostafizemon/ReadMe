@@ -55,6 +55,15 @@ class SharedPreferencesService {
     await _prefs?.remove(_userEmailKey);
   }
 
+  Future<void> updateUserDetails({
+    required String userName,
+    required String userEmail,
+  }) async {
+    await _prefs?.setString(_userNamerKey, userName);
+    await _prefs?.setString(_userEmailKey, userEmail);
+  }
+
+
   bool isLoggedIn() {
     final token = getAccessToken();
     final type = getTokenType();

@@ -5,5 +5,6 @@ class AppRoutes{
   static const addNewBlogScreen='/addnewblog';
   static const loginScreen='/login';
   static const signupScreen='/signup';
-
+  static const userBlogScreen='/userblog';
+  static const userProfileScreen='/userprofile';
 }

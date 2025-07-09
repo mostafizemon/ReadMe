@@ -47,11 +47,17 @@ class DrawerListview extends StatelessWidget {
           ),
         ),
         ListTile(
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(AppRoutes.userProfileScreen);
+          },
           leading: Icon(Icons.person),
           title: Text("Profile"),
         ),
-        ListTile(leading: Icon(Icons.post_add), title: Text("Your Blog")),
+        ListTile(
+          onTap: () => Get.toNamed(AppRoutes.userBlogScreen),
+          leading: Icon(Icons.post_add),
+          title: Text("Your Blog"),
+        ),
         ListTile(
           onTap: () {
             SharedPreferencesService().clearAuthToken();
