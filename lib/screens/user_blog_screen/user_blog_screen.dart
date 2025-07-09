@@ -54,6 +54,63 @@ class UserBlogScreen extends StatelessWidget {
                               title: Text("Update"),
                               onTap: () {
                                 Get.back();
+
+                                final titleController = TextEditingController(
+                                  text: blog.title,
+                                );
+                                final descriptionController =
+                                    TextEditingController(
+                                      text: blog.description,
+                                    );
+
+                                Get.dialog(
+                                  AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    title: const Text("Update Blog"),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          TextFormField(
+                                            controller: titleController,
+                                            maxLines: 2,
+                                            decoration: const InputDecoration(
+                                              labelText: 'Title',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          TextFormField(
+                                            controller: descriptionController,
+                                            maxLines: 5,
+                                            decoration: const InputDecoration(
+                                              labelText: 'Description',
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Get.back(),
+                                        child: const Text("Cancel"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          controller.updateBlog(
+                                            id: blog.id,
+                                            title: titleController.text.trim(),
+                                            description: descriptionController
+                                                .text
+                                                .trim(),
+                                          );
+                                          Get.back(); // Close dialog after update
+                                        },
+                                        child: const Text("Update"),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               },
                             ),
                             Divider(),

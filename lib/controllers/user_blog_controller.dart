@@ -18,6 +18,54 @@ class UserBlogController extends GetxController {
     super.onInit();
   }
 
+  Future<void> updateBlog({
+    required int id,
+    required String title,
+    required String description,
+  }) async {
+    try {
+      final response = await http.put(
+        Uri.parse("$baseUrl/api/blogs/$id"),
+        headers: {
+          "Authorization": SharedPreferencesService().getAuthHeader()!,
+          "Accept": "application/json",
+        },
+        body: {
+          "title": title,
+          "description": description,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        await fetchUserBlogs();
+        Get.snackbar(
+          "Success",
+          "Blog updated successfully",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        Get.snackbar(
+          "Error",
+          "Failed to update blog",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+
   Future<void> deleteBlog(int blogId) async {
     try {
       final String url = "$baseUrl/api/blogs/$blogId";
