@@ -38,11 +38,8 @@ class HomeController extends GetxController {
         blogs.value = List<BlogModel>.from(
           data['data'].map((item) => BlogModel.fromJson(item)),
         );
-      } else {
-        print("Error: ${response.statusCode}");
-      }
+      } else {}
     } catch (e) {
-      print("Error: $e");
     } finally {
       isLoading.value = false;
     }

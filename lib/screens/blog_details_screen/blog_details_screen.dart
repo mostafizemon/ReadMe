@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/blog_details_controller.dart';
-import '../../services/sharedpreferences_service.dart';
 
 class BlogDetailsScreen extends StatelessWidget {
   BlogDetailsScreen({super.key});
